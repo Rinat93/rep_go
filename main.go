@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net"
 	"os"
-	"project/server-go/lib/lib"
+	"reg_go/lib"
 )
 
 const (
@@ -14,7 +14,7 @@ const (
 )
 
 func main() {
-	lib.lib.lib()
+	lib.Lib1()
 	l, err := net.Listen(CONN_TYPE, CONN_HOST+":"+CONN_PORT)
 	if err != nil {
 		fmt.Println("ERROR listening: ", err.Error())
