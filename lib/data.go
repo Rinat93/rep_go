@@ -4,8 +4,6 @@ import (
 	"crypto/sha1"
 	"fmt"
 	"hash"
-	"io/ioutil"
-	"os"
 )
 
 // Data
@@ -27,8 +25,8 @@ func (c *DataProccessing) New() *DataProccessing {
 	return data
 }
 
-// Save сохранение в структуру данных
-func (c *DataProccessing) Save(data string) {
+// Add добавление в структуру данных
+func (c *DataProccessing) Add(data string) {
 	fmt.Println("Save data")
 	// Создаем хэш данных
 	hashData := sha1.New()
