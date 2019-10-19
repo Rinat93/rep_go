@@ -20,7 +20,12 @@ func (c *Cache) New() *Cache {
 	return cache
 }
 
-// Add Добавить на сохранение кэша
+/*
+	Add Добавить на сохранение кэша
+	direcory string - Директория где будет находится кэш
+	name string - имя файла/кэша
+	dataArr []string - Массив строк, данные.
+*/
 func (c *Cache) add(name string, dataArr []string, directory string) {
 	c.Name = name
 

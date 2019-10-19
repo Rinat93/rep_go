@@ -18,6 +18,12 @@ func (c *Collection) New() *Collection {
 	return cacheCol
 }
 
+// AddAsync Асинхронное добавление
+func (c *Collection) AddAsync(name string, dataArr []string, res chan<- *Collection) {
+	c.Add(name, dataArr)
+	res <- c
+}
+
 // Add Добавление в коллекцию кэш
 func (c *Collection) Add(name string, dataArr []string) {
 
