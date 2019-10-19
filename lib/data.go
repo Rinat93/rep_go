@@ -1,20 +1,20 @@
 package lib
 
 import (
-	"crypto/sha1"
 	"fmt"
 	"hash"
+	"hash/crc32"
 )
 
-// Data
+// Data сами данные
 type Data struct {
-	text string
-	hash hash.Hash
+	Text string
+	Hash hash.Hash32
 }
 
-// DataProccessing ... Данные находятся тут
+// DataProccessing ... Массив Данных находятся тут
 type DataProccessing struct {
-	data  []Data
+	Data  []Data
 	depth uint64
 }
 
@@ -29,16 +29,19 @@ func (c *DataProccessing) New() *DataProccessing {
 func (c *DataProccessing) Add(data string) {
 	fmt.Println("Save data")
 	// Создаем хэш данных
-	hashData := sha1.New()
+	hashData := crc32.NewIEEE()
 	hashData.Write([]byte(data))
 	var BlockData Data = Data{data, hashData}
 
-	c.data = append(c.data, BlockData)
+	c.Data = append(c.Data, BlockData)
 	c.depth++
 }
 
 // Search data
 func (c *DataProccessing) Search(data string) {
 	fmt.Println("Search ...")
-
 }
+
+// func (c *DataProccessing) Views() []byte {
+// 	return []byte(c.text)
+// }

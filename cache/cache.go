@@ -1,47 +1,51 @@
 package cache
 
 import (
-	"fmt"
 	"os"
+	"reg_go/exceptions"
 	"reg_go/lib"
 )
 
-// Cache
+// Cache структура для построения кэша данных
 type Cache struct {
-	name  string
-	index int64
+	Name  string
+	Index int64
 	Data  lib.DataProccessing
 }
 
-// New Инициализация
+// New Инициализация кэша
 func (c *Cache) New() *Cache {
 	var cache *Cache = new(Cache)
+	cache.Index = 0
 	return cache
 }
 
-// Add Добавить на сохранение
-func (c *Cache) Add(name string, dataArr []string) {
-	c.name = name
+// Add Добавить на сохранение кэша
+func (c *Cache) add(name string, dataArr []string, directory string) {
+	c.Name = name
+
+	// Сохраняем данные для сохранения в память
 	data := lib.DataProccessing{}
 	for _, value := range dataArr {
 		data.Add(value)
 	}
+
 	c.Data = data
-	c.index++
+	c.Index++
+	c.Save(directory)
 }
 
 // Save Сохранить в файл
-func (c *Cache) Save() {
-	file, err := os.OpenFile("./data/"+c.name, os.O_APPEND|os.O_WRONLY, os.ModeAppend)
-	if err != nil {
-		os.Create("./data/" + c.name)
-		fmt.Println("CREATE")
-	}
+func (c *Cache) Save(directory string) {
+
+	// Создаем файл
+	file, err := os.OpenFile(directory+"/"+c.Name, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0755)
+	exceptions.ErrorFy(err)
 	defer file.Close()
+
+	// Записываем данные
 	for _, value := range c.Data.Data {
-		_, err := file.WriteString(value.Text + "\n")
-		if err != nil {
-			panic(fmt.Errorf(err.Error()))
-		}
+		_, err2 := file.WriteString(value.Text + "\n")
+		exceptions.ErrorFy(err2)
 	}
 }
