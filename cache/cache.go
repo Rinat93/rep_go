@@ -10,7 +10,7 @@ import (
 type Cache struct {
 	Name  string
 	Index int64
-	Data  lib.DataProccessing
+	Data  *lib.DataProccessing
 }
 
 // New Инициализация кэша
@@ -30,7 +30,7 @@ func (c *Cache) add(name string, dataArr []string, directory string) {
 	c.Name = name
 
 	// Сохраняем данные для сохранения в память
-	data := lib.DataProccessing{}
+	data := new(lib.DataProccessing)
 	for _, value := range dataArr {
 		data.Add(value)
 	}

@@ -12,7 +12,7 @@ import (
 // Collection коллекция кэшей
 type Collection struct {
 	name  string
-	cache []Cache
+	cache []*Cache
 }
 
 // New Инициализация коллекции кэша
@@ -38,7 +38,7 @@ func (c *Collection) Add(name string, dataArr []string) {
 		exceptions.ErrorFy(err)
 	}
 
-	cache := Cache{}
+	cache := new(Cache)
 	cache.add(name, dataArr, directoryCollections)
 
 	c.cache = append(c.cache, cache)
