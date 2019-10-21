@@ -14,7 +14,7 @@ type Data struct {
 
 // DataProccessing ... Массив Данных находятся тут
 type DataProccessing struct {
-	Data  []Data
+	Data  []*Data
 	depth uint64
 }
 
@@ -30,7 +30,7 @@ func (c *DataProccessing) Add(data string) {
 	// Создаем хэш данных
 	hashData := crc32.NewIEEE()
 	hashData.Write([]byte(data))
-	var BlockData Data = Data{data, hashData}
+	var BlockData *Data = &Data{data, hashData}
 
 	c.Data = append(c.Data, BlockData)
 	c.depth++
