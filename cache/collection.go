@@ -44,3 +44,13 @@ func (c *Collection) Add(name string, dataArr []string) {
 	c.cache = append(c.cache, cache)
 	// defer wg.Done()
 }
+
+// Remove Удаление коллекции
+func (c *Collection) Remove() error {
+	directoryCollections := config.DIRECTORYCACHE + "/" + c.name
+	err := os.RemoveAll(directoryCollections)
+	if err != nil {
+		return err
+	}
+	return nil
+}

@@ -27,7 +27,6 @@ func (c *DataProccessing) New() *DataProccessing {
 
 // Add добавление в структуру данных
 func (c *DataProccessing) Add(data string) {
-	fmt.Println("Save data")
 	// Создаем хэш данных
 	hashData := crc32.NewIEEE()
 	hashData.Write([]byte(data))
