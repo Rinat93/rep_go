@@ -6,7 +6,7 @@ import (
 	"reg_go/lib"
 )
 
-// Cache структура для построения кэша данных
+// FileData структура для построения кэша данных
 type FileData struct {
 	Name  string
 	Index int64
