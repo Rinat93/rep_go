@@ -1,15 +1,20 @@
 package lib
 
 import (
+	"bytes"
+	"compress/bzip2"
 	"fmt"
 	"hash"
 	"hash/crc32"
+	"io"
+	"strings"
 )
 
 // Data сами данные
 type Data struct {
-	Text string
-	Hash hash.Hash32
+	Text    string
+	Hash    hash.Hash32
+	Readers io.Reader
 }
 
 // DataProccessing ... Массив Данных находятся тут
@@ -25,12 +30,21 @@ func (c *DataProccessing) New() *DataProccessing {
 	return data
 }
 
+// CompressData - Сжатие данных
+func (c *DataProccessing) CompressData(data string) io.Reader {
+
+	b := strings.NewReader(data)
+	return bzip2.NewReader(b)
+
+}
+
 // Add добавление в структуру данных
 func (c *DataProccessing) Add(data string) {
 	// Создаем хэш данных
 	hashData := crc32.NewIEEE()
 	hashData.Write([]byte(data))
-	var BlockData *Data = &Data{data, hashData}
+	readerIo := c.CompressData(data)
+	var BlockData *Data = &Data{data, hashData, readerIo}
 
 	c.Data = append(c.Data, BlockData)
 	c.depth++
