@@ -1,7 +1,6 @@
 package lib
 
 import (
-	"bytes"
 	"compress/bzip2"
 	"fmt"
 	"hash"
@@ -32,10 +31,8 @@ func (c *DataProccessing) New() *DataProccessing {
 
 // CompressData - Сжатие данных
 func (c *DataProccessing) CompressData(data string) io.Reader {
-
 	b := strings.NewReader(data)
 	return bzip2.NewReader(b)
-
 }
 
 // Add добавление в структуру данных
