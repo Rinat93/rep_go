@@ -39,7 +39,7 @@ func (c *Collection) Add(name string, dataArr []string) {
 	}
 
 	file := new(FileData)
-	file.add(name, dataArr, directoryCollections)
+	file.Add(name, dataArr, directoryCollections)
 
 	c.FileData = append(c.FileData, file)
 	// defer wg.Done()

@@ -20,13 +20,19 @@ func (c *FileData) New() *FileData {
 	return file
 }
 
+// AddAsync - асинхронное добавление
+func (c *FileData) AddAsync(name string, dataArr []string, directory string, res chan<- *FileData) {
+	c.Add(name, dataArr, directory)
+	res <- c
+}
+
 /*
-	Add Добавить на сохранение кэша
+	Add - Добавить на сохранение кэша
 	direcory string - Директория где будет находится кэш
 	name string - имя файла/кэша
 	dataArr []string - Массив строк, данные.
 */
-func (c *FileData) add(name string, dataArr []string, directory string) {
+func (c *FileData) Add(name string, dataArr []string, directory string) {
 	c.Name = name
 
 	// Сохраняем данные для сохранения в память
