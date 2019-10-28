@@ -2,13 +2,17 @@ package collections
 
 import (
 	"fmt"
+	"reg_go/exceptions"
 	"testing"
 )
 
 // Асинхронное создание кэша
 func TestFileAsync(t *testing.T) {
 	file := Collection{Name: "dirs"}
-	file.ReadFile() // Инициализация уже созданных данных
+	err := file.ReadFile() // Инициализация уже созданных данных
+	if err != nil {
+		exceptions.ErrorFy(err)
+	}
 	var result *Collection
 
 	for i := 0; i < 100; i++ {
@@ -22,6 +26,15 @@ func TestFileAsync(t *testing.T) {
 		fmt.Println("--END--")
 	}
 
+}
+
+// Тестирование инициализации данных
+func TestReadFilesCollection(t *testing.T) {
+	file := Collection{Name: "dirs"}
+	err := file.ReadFile() // Инициализация уже созданных данных
+	if err != nil {
+		exceptions.ErrorFy(err)
+	}
 }
 
 // Синхронное создание кэша
