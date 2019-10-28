@@ -51,7 +51,9 @@ func (c *Collection) ReadFile() error {
 				c.FileData[file.Name()] = data
 			} else {
 				c.FileData[file.Name()].Data.Data = append(c.FileData[file.Name()].Data.Data, data.Data.Data...)
+				c.FileData[file.Name()].Data.Hash = data.Data.Hash
 			}
+			fmt.Println(c.FileData[file.Name()].Data.Hash)
 		}
 	}
 
@@ -88,6 +90,11 @@ func (c *Collection) Add(name string, dataArr interface{}) {
 	} else {
 		// Если этот файл уже есть то расшираем его но перед добавлением проверяем уникальность по хэшу
 		if c.FileData[name].Data.Hash != file.Data.Hash {
+			// transaction := new(Transaction)
+			// transaction.Name = c.Name
+			// transaction.FileData = c.FileData
+			// transaction.Save()
+
 			c.FileData[name].Data.Data = append(c.FileData[name].Data.Data, file.Data.Data...)
 			c.FileData[name].Data.Hash = file.Data.Hash
 		}
@@ -98,7 +105,6 @@ func (c *Collection) Add(name string, dataArr interface{}) {
 func (c *Collection) Save() {
 	directoryCollections := config.DIRECTORYCACHE + "/" + c.Name
 	for _, file := range c.FileData {
-		fmt.Println(file)
 		file.Save(directoryCollections, c.FileData)
 	}
 }

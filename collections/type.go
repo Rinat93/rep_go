@@ -11,7 +11,13 @@ type FileData struct {
 	Data  *lib.DataProccessing
 }
 
-// Collection коллекция кэшей
+// Transaction Очередь на сохранения в файловую систему
+type Transaction struct {
+	Name     string
+	FileData map[string]*FileData
+}
+
+// Collection коллекция кэшей загруженная в память
 type Collection struct {
 	Name     string
 	FileData map[string]*FileData
