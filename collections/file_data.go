@@ -1,17 +1,11 @@
 package collections
 
 import (
+	"io/ioutil"
 	"os"
 	"reg_go/exceptions"
 	"reg_go/lib"
 )
-
-// FileData структура для построения кэша данных
-type FileData struct {
-	Name  string
-	Index int64
-	Data  *lib.DataProccessing
-}
 
 // New Инициализация кэша
 func (c *FileData) New() *FileData {
@@ -27,10 +21,10 @@ func (c *FileData) AddAsync(name string, dataArr []string, directory string, res
 }
 
 /*
-	Add - Добавить на сохранение кэша
-	direcory string - Директория где будет находится кэш
-	name string - имя файла/кэша
-	dataArr []string - Массив строк, данные.
+Add - Добавить на сохранение кэша
+direcory string - Директория где будет находится кэш
+name string - имя файла/кэша
+dataArr []string - Массив строк, данные.
 */
 func (c *FileData) Add(name string, dataArr []string, directory string) {
 	c.Name = name
@@ -44,6 +38,34 @@ func (c *FileData) Add(name string, dataArr []string, directory string) {
 	c.Data = data
 	c.Index++
 	c.Save(directory)
+}
+
+// ReadFile Чтение файлов
+func (c *FileData) ReadFile(directory string) error {
+	fileOpen, err := os.Open(directory + "/" + c.Name)
+	if err != nil {
+		exceptions.ErrorFy(err)
+	}
+	defer fileOpen.Close()
+
+	text, err := ioutil.ReadAll(fileOpen)
+
+	if err != nil {
+		exceptions.ErrorFy(err)
+	}
+
+	jsonData := new(lib.JSONFile)
+	jsondec, err := jsonData.JSONDecode(string(text))
+	if err != nil {
+		exceptions.ErrorFy(err)
+	}
+
+	result := new(lib.DataProccessing)
+	result.Add(jsondec)
+
+	c.Data = result
+
+	return nil
 }
 
 // Save Сохранить в файл

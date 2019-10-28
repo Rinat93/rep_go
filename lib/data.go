@@ -3,24 +3,10 @@ package lib
 import (
 	"compress/bzip2"
 	"fmt"
-	"hash"
 	"hash/crc32"
 	"io"
 	"strings"
 )
-
-// Data сами данные
-type Data struct {
-	Text    string
-	Hash    hash.Hash32
-	Readers io.Reader
-}
-
-// DataProccessing ... Массив Данных находятся тут
-type DataProccessing struct {
-	Data  []*Data
-	depth uint64
-}
 
 // New Data
 func (c *DataProccessing) New() *DataProccessing {
@@ -29,22 +15,28 @@ func (c *DataProccessing) New() *DataProccessing {
 	return data
 }
 
-// CompressData - Сжатие данных
-func (c *DataProccessing) CompressData(data string) io.Reader {
+// Сжатие данных
+func (c *DataProccessing) compressingFile(data string) io.Reader {
 	b := strings.NewReader(data)
+
 	return bzip2.NewReader(b)
 }
 
 // Add добавление в структуру данных
-func (c *DataProccessing) Add(data string) {
+func (c *DataProccessing) Add(data interface{}) error {
 	// Создаем хэш данных
 	hashData := crc32.NewIEEE()
-	hashData.Write([]byte(data))
-	readerIo := c.CompressData(data)
-	var BlockData *Data = &Data{data, hashData, readerIo}
+	jsonData := new(JSONFile)
+	jsonRead, err := jsonData.JSONEncode(data)
+	if err != nil {
+		return err
+	}
+	hashData.Write([]byte(jsonRead))
+	var BlockData *Data = &Data{jsonRead, hashData}
 
 	c.Data = append(c.Data, BlockData)
 	c.depth++
+	return nil
 }
 
 // Search data

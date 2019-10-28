@@ -1,8 +1,18 @@
 package collections
 
-type Collections interface {
-	New()
-	Add(name string, dataArr []string)
-	AddAsync(name string, dataArr []string, res chan<- *Collection)
-	Remove()
+import (
+	"reg_go/lib"
+)
+
+// FileData структура для построения кэша данных
+type FileData struct {
+	Name  string
+	Index int64
+	Data  *lib.DataProccessing
+}
+
+// Collection коллекция кэшей
+type Collection struct {
+	Name     string
+	FileData []*FileData
 }
