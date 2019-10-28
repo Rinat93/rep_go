@@ -1,6 +1,7 @@
 package collections
 
 import (
+	"fmt"
 	"io/ioutil"
 	"os"
 	"reg_go/config"
@@ -27,7 +28,6 @@ func initDirectory() ([]Collection, error) {
 // New Инициализация коллекции кэша
 func (c *Collection) New() *Collection {
 	var cacheCol *Collection = new(Collection)
-	// c.initDirectory()
 	return cacheCol
 }
 
@@ -43,17 +43,15 @@ func (c *Collection) ReadFile() error {
 			err := data.ReadFile(config.DIRECTORYCACHE + "/" + c.Name)
 			if err != nil {
 				exceptions.ErrorFy(err)
-
 			}
-			// c.FileData[file.Name()]
-			if c.FileData[file.Name()] == nil {
-				elements := make(map[string]*FileData)
-				elements[file.Name()] = data
-				c.FileData = elements
+			if c.FileData == nil {
+				c.FileData = map[string]*FileData{}
+				c.FileData[file.Name()] = data
+			} else if c.FileData[file.Name()] == nil {
+				c.FileData[file.Name()] = data
 			} else {
 				c.FileData[file.Name()].Data.Data = append(c.FileData[file.Name()].Data.Data, data.Data.Data...)
 			}
-			// c.FileData =
 		}
 	}
 
@@ -79,30 +77,27 @@ func (c *Collection) Add(name string, dataArr interface{}) {
 
 	file := new(FileData)
 	file.Add(name, dataArr)
-	/*
-		Если файл найден то нужно расширить его структуру а не создавать новую!
-	*/
-	// for _, k := range c.FileData {
-	// 	if k.Name == name {
-	// 		k.Data.Data = append(k.Data.Data, file.Data.Data)
-	// 	}
-	// }
-	if c.FileData[name] == nil {
-		elements := make(map[string]*FileData)
-		elements[name] = file
-		c.FileData = elements
-	} else {
-		c.FileData[name].Data.Data = append(c.FileData[name].Data.Data, file.Data.Data...)
-	}
-	// c.FileData = append(c.FileData, file)
 
-	// defer wg.Done()
+	if c.FileData == nil {
+		// Инициализируем
+		c.FileData = map[string]*FileData{}
+		c.FileData[name] = file
+	} else if c.FileData[name] == nil {
+		// Если нет ключа то создаем и присваиваем
+		c.FileData[name] = file
+	} else {
+		// Если этот файл уже есть то расшираем его но перед добавлением проверяем уникальность по хэшу
+		if c.FileData[name].Data.Hash != c.FileData[name].Data.Hash {
+			c.FileData[name].Data.Data = append(c.FileData[name].Data.Data, file.Data.Data...)
+		}
+	}
 }
 
 // Save Сохранение
 func (c *Collection) Save() {
 	directoryCollections := config.DIRECTORYCACHE + "/" + c.Name
 	for _, file := range c.FileData {
+		fmt.Println(file)
 		file.Save(directoryCollections, c.FileData)
 	}
 }

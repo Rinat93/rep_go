@@ -8,7 +8,8 @@ import (
 
 // Асинхронное создание кэша
 func TestFileAsync(t *testing.T) {
-	file := Collection{Name: "dirs"}
+	file := new(Collection)
+	file.Name = "dirs"
 	err := file.ReadFile() // Инициализация уже созданных данных
 	if err != nil {
 		exceptions.ErrorFy(err)
@@ -25,18 +26,32 @@ func TestFileAsync(t *testing.T) {
 		fmt.Printf("%+v\n", result)
 		fmt.Println("--END--")
 	}
+
 	file.Save()
 
 }
 
 // Синхронное создание кэша
-func Test_FileSync(t *testing.T) {
+func TestFileSync(t *testing.T) {
 	file := Collection{Name: "dirs2"}
+	err := file.ReadFile() // Инициализация уже созданных данных
+	if err != nil {
+		exceptions.ErrorFy(err)
+	}
 	for i := 0; i < 100; i++ {
 		file.Add("test.json", []string{"Привет", "Lol" + string(i)})
 		file.Add("test2.json", []string{"Привет1", "Lol1"})
 		file.Add("test3.json", []string{"Привет2", "Lol2"})
 	}
+	file.Save()
+	// err := file.Remove()
+	// if err != nil {
+	// 	t.Error(err)
+	// }
+}
+
+func TestFileRemove(t *testing.T) {
+	file := Collection{Name: "dirs2"}
 	err := file.Remove()
 	if err != nil {
 		t.Error(err)

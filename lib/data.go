@@ -22,19 +22,19 @@ func (c *DataProccessing) compressingFile(data string) io.Reader {
 	return bzip2.NewReader(b)
 }
 
-// Add добавление в структуру данных
+// Add добавление в структуру данныхa ...interface{}
 func (c *DataProccessing) Add(data interface{}) error {
 	// Создаем хэш данных
 	hashData := crc32.NewIEEE()
-	jsonData := new(JSONFile)
-	jsonRead, err := jsonData.JSONEncode(data)
+	jsonRead, err := new(JSONFile).JSONEncode(data)
 	if err != nil {
 		return err
 	}
 	hashData.Write([]byte(jsonRead))
-	var BlockData *Data = &Data{jsonRead, hashData}
+	var BlockData *Data = &Data{jsonRead, hashData.Sum32()}
 
 	c.Data = append(c.Data, BlockData)
+	c.Hash = hashData.Sum32()
 	c.depth++
 	return nil
 }

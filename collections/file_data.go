@@ -83,9 +83,4 @@ func (c *FileData) Save(directory string, dataArr interface{}) {
 	// Записывает в файл
 	_, err = file.WriteString(jsonSave + "\n")
 	exceptions.ErrorFy(err)
-	// Записываем данные
-	// for _, value := range c.Data.Data {
-	// 	_, err2 := file.WriteString(value.Text + "\n")
-	// 	exceptions.ErrorFy(err2)
-	// }
 }
