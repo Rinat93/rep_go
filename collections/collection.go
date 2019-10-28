@@ -28,6 +28,7 @@ func initDirectory() ([]Collection, error) {
 // New Инициализация коллекции кэша
 func (c *Collection) New() *Collection {
 	var cacheCol *Collection = new(Collection)
+	cacheCol.pool = make(map[string][]*Transaction)
 	return cacheCol
 }
 
@@ -79,13 +80,20 @@ func (c *Collection) Add(name string, dataArr interface{}) {
 
 	file := new(FileData)
 	file.Add(name, dataArr)
-
+	transaction := new(Transaction)
+	transaction.Name = c.Name
 	if c.FileData == nil {
 		// Инициализируем
 		c.FileData = map[string]*FileData{}
+		c.pool = map[string][]*Transaction{}
 		c.FileData[name] = file
+		transaction.FileData = c.FileData
+		c.pool[name] = append(c.pool[name], transaction)
+
 	} else if c.FileData[name] == nil {
 		// Если нет ключа то создаем и присваиваем
+		transaction.FileData = c.FileData
+		c.pool[name] = append(c.pool[name], transaction)
 		c.FileData[name] = file
 	} else {
 		// Если этот файл уже есть то расшираем его но перед добавлением проверяем уникальность по хэшу
@@ -94,7 +102,8 @@ func (c *Collection) Add(name string, dataArr interface{}) {
 			// transaction.Name = c.Name
 			// transaction.FileData = c.FileData
 			// transaction.Save()
-
+			transaction.FileData = c.FileData
+			c.pool[name] = append(c.pool[name], transaction)
 			c.FileData[name].Data.Data = append(c.FileData[name].Data.Data, file.Data.Data...)
 			c.FileData[name].Data.Hash = file.Data.Hash
 		}
@@ -103,10 +112,12 @@ func (c *Collection) Add(name string, dataArr interface{}) {
 
 // Save Сохранение
 func (c *Collection) Save() {
-	directoryCollections := config.DIRECTORYCACHE + "/" + c.Name
-	for _, file := range c.FileData {
-		file.Save(directoryCollections, c.FileData)
+	for _, pool := range c.pool {
+		for _, val := range pool {
+			val.Save()
+		}
 	}
+	c.pool = make(map[string][]*Transaction)
 }
 
 // Remove Удаление коллекции и всех вложенных файлов/папок

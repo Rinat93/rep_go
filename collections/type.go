@@ -21,4 +21,5 @@ type Transaction struct {
 type Collection struct {
 	Name     string
 	FileData map[string]*FileData
+	pool     map[string][]*Transaction
 }
