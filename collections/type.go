@@ -14,5 +14,5 @@ type FileData struct {
 // Collection коллекция кэшей
 type Collection struct {
 	Name     string
-	FileData []*FileData
+	FileData map[string]*FileData
 }

@@ -25,16 +25,8 @@ func TestFileAsync(t *testing.T) {
 		fmt.Printf("%+v\n", result)
 		fmt.Println("--END--")
 	}
+	file.Save()
 
-}
-
-// Тестирование инициализации данных
-func TestReadFilesCollection(t *testing.T) {
-	file := Collection{Name: "dirs"}
-	err := file.ReadFile() // Инициализация уже созданных данных
-	if err != nil {
-		exceptions.ErrorFy(err)
-	}
 }
 
 // Синхронное создание кэша

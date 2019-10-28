@@ -45,7 +45,15 @@ func (c *Collection) ReadFile() error {
 				exceptions.ErrorFy(err)
 
 			}
-			c.FileData = append(c.FileData, data)
+			// c.FileData[file.Name()]
+			if c.FileData[file.Name()] == nil {
+				elements := make(map[string]*FileData)
+				elements[file.Name()] = data
+				c.FileData = elements
+			} else {
+				c.FileData[file.Name()].Data.Data = append(c.FileData[file.Name()].Data.Data, data.Data.Data...)
+			}
+			// c.FileData =
 		}
 	}
 
@@ -79,7 +87,14 @@ func (c *Collection) Add(name string, dataArr interface{}) {
 	// 		k.Data.Data = append(k.Data.Data, file.Data.Data)
 	// 	}
 	// }
-	c.FileData = append(c.FileData, file)
+	if c.FileData[name] == nil {
+		elements := make(map[string]*FileData)
+		elements[name] = file
+		c.FileData = elements
+	} else {
+		c.FileData[name].Data.Data = append(c.FileData[name].Data.Data, file.Data.Data...)
+	}
+	// c.FileData = append(c.FileData, file)
 
 	// defer wg.Done()
 }
