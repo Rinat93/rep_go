@@ -8,7 +8,7 @@ import (
 // Асинхронное создание кэша
 func TestFileAsync(t *testing.T) {
 	file := Collection{Name: "dirs"}
-	file.ReadFile()
+	file.ReadFile() // Инициализация уже созданных данных
 	var result *Collection
 
 	for i := 0; i < 100; i++ {
