@@ -87,8 +87,9 @@ func (c *Collection) Add(name string, dataArr interface{}) {
 		c.FileData[name] = file
 	} else {
 		// Если этот файл уже есть то расшираем его но перед добавлением проверяем уникальность по хэшу
-		if c.FileData[name].Data.Hash != c.FileData[name].Data.Hash {
+		if c.FileData[name].Data.Hash != file.Data.Hash {
 			c.FileData[name].Data.Data = append(c.FileData[name].Data.Data, file.Data.Data...)
+			c.FileData[name].Data.Hash = file.Data.Hash
 		}
 	}
 }

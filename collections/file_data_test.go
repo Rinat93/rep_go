@@ -39,7 +39,7 @@ func TestFileSync(t *testing.T) {
 		exceptions.ErrorFy(err)
 	}
 	for i := 0; i < 100; i++ {
-		file.Add("test.json", []string{"Привет", "Lol" + string(i)})
+		file.Add("test.json", []string{"Привет" + string(i), "Lol" + string(i)})
 		file.Add("test2.json", []string{"Привет1", "Lol1"})
 		file.Add("test3.json", []string{"Привет2", "Lol2"})
 	}

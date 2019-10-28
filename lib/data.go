@@ -3,7 +3,6 @@ package lib
 import (
 	"compress/bzip2"
 	"fmt"
-	"hash/crc32"
 	"io"
 	"strings"
 )
@@ -25,16 +24,15 @@ func (c *DataProccessing) compressingFile(data string) io.Reader {
 // Add добавление в структуру данныхa ...interface{}
 func (c *DataProccessing) Add(data interface{}) error {
 	// Создаем хэш данных
-	hashData := crc32.NewIEEE()
 	jsonRead, err := new(JSONFile).JSONEncode(data)
 	if err != nil {
 		return err
 	}
-	hashData.Write([]byte(jsonRead))
-	var BlockData *Data = &Data{jsonRead, hashData.Sum32()}
+	hashData, err := HashUint(jsonRead)
+	var BlockData *Data = &Data{data, hashData}
 
 	c.Data = append(c.Data, BlockData)
-	c.Hash = hashData.Sum32()
+	c.Hash = hashData
 	c.depth++
 	return nil
 }

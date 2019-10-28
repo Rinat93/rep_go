@@ -5,7 +5,7 @@ type JSONFile struct{}
 
 // Data сами данные
 type Data struct {
-	Text string
+	Text interface{}
 	Hash uint32
 }
 
