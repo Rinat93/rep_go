@@ -20,6 +20,8 @@ type Task struct {
 	Save bool
 	Type string
 	Prioritety uint8
+	QueueL *Task
+	QueueR *Task
 }
 
 /*
@@ -29,7 +31,7 @@ Task - Список задач в пуле где map[string] это имя гр
 */
 type Pool struct{
 	Name string
-	TaskGroup map[string][]*Task
+	TaskGroup map[string]*Task
 }
 
 type PoolCollection struct {
