@@ -9,20 +9,22 @@ func (c *Pool) New() *Pool {
 	return pool
 }
 
+/*
+Add - Добавление задачи в Pool
+
+Добавляем задачу в Pool, в право кидаем задачи с боле высокой приоритетностью
+
+ */
 func (c *Pool) Add(name string, task *Task) {
 	if c.TaskGroup[name] == nil {
 		c.TaskGroup = map[string]*Task{}
 		c.TaskGroup[name] = task
 	} else {
-		if task.Prioritety > c.TaskGroup[name].Prioritety{
-			c.TaskGroup[name].QueueR = task
-			c.Add(name, task.QueueL)
-		} else {
-			c.TaskGroup[name].QueueL = task
-			c.Add(name, task.QueueR)
+		if task == nil {
+			return
 		}
+		c.TaskGroup[name].Add(task)
 
 	}
 	//sort.Sort(c.TaskGroup)
 }
-
