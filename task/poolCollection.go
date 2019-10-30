@@ -1,6 +1,9 @@
 package task
 
 import (
+	"encoding/json"
+
+	"io/ioutil"
 	"os"
 	"reg_go/config"
 	"reg_go/exceptions"
@@ -35,13 +38,33 @@ func (c *PoolCollection) SaveFile() {
 		exceptions.ErrorFy(err)
 	}
 	for _,t := range c.Pool {
-		file, err := os.OpenFile(config.DIRECTORYCACHE+"/"+t.Name+".json", os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0755)
-		defer file.Close()
+		// Все старые и нынешниу пулы будут находится тут
+		var poll []*Pool = []*Pool{}
+		poll = append(poll,t)
+
+		//  Открываем файл данно пула
+		file, err := os.OpenFile(config.DIRECTORYCACHE+"/"+t.Name+".json", os.O_CREATE|os.O_RDWR, 0755)
 		exceptions.ErrorFy(err)
+
+		// Считываем сохраненые пулы с файла
+		old,err := ioutil.ReadAll(file)
+
+		exceptions.ErrorFy(err)
+
 		jsonData := new(lib.JSONFile)
-		jsonSave, err := jsonData.JSONEncode(c.Pool)
+		if string(old) != "" && err == nil{
+			pol2 := []*Pool{}
+			err := json.Unmarshal(old, &pol2)
+			exceptions.ErrorFy(err)
+			poll = append(poll,pol2...)
+		}
+
+		jsonSave, err := jsonData.JSONEncode(poll)
 		exceptions.ErrorFy(err)
-		_, err = file.WriteString(jsonSave + "\n")
+		file.WriteAt([]byte(jsonSave),0)
+		//_, err = io.WriteString(file, jsonSave )
 		exceptions.ErrorFy(err)
+
+		file.Close()
 	}
 }

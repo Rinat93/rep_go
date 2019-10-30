@@ -31,8 +31,8 @@ Name - Наименование потока, будет состоят из с�
 Task - Список задач в пуле где map[string] это имя группы задач
 */
 type Pool struct{
-	Name string
-	TaskGroup map[string]*Task
+	Name string `json:"name"`
+	TaskGroup map[string]*Task `json:"task_all"`
 }
 
 type PoolCollection struct {

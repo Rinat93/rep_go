@@ -1,8 +1,5 @@
 package task
 
-import (
-	"fmt"
-)
 func (c *Pool) New() *Pool {
 	var pool *Pool = new(Pool)
 	pool.TaskGroup = map[string]*Task{}
@@ -24,7 +21,7 @@ func (c *Pool) Add(name string, task *Task) error {
 		}
 		c.TaskGroup[name].Add(task)
 	}
-	fmt.Printf("%+v\n", task)
+	//fmt.Printf("%+v\n", task)
 	return nil
 	//sort.Sort(c.TaskGroup)
 }
