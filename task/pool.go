@@ -24,7 +24,7 @@ func (c *Pool) Add(name string, task *Task) error {
 		}
 		c.TaskGroup[name].Add(task)
 	}
-	fmt.Printf("%+v\n", task.Prioritety)
+	fmt.Printf("%+v\n", task)
 	return nil
 	//sort.Sort(c.TaskGroup)
 }

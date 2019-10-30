@@ -3,6 +3,7 @@ package task
 import (
 	"fmt"
 	"testing"
+	"time"
 )
 
 
@@ -13,7 +14,7 @@ func TestPool(t *testing.T) {
 		Name:        "t1",
 		Target:      "main",
 		Time:        1111,
-		CreatedTime: 1800,
+		CreatedTime: time.RFC822,
 		Save:        false,
 		Type:        "",
 		Prioritety:  0,
@@ -24,7 +25,7 @@ func TestPool(t *testing.T) {
 		Name:        "t12",
 		Target:      "main",
 		Time:        1111,
-		CreatedTime: 1800,
+		CreatedTime: time.RFC822,
 		Save:        false,
 		Type:        "",
 		Prioritety:  2,

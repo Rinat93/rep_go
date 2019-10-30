@@ -1,4 +1,5 @@
 package task
+
 /*
 Task - Задачи
 Name - название задачи
@@ -16,7 +17,7 @@ type Task struct {
 	Name string
 	Target string
 	Time uint64
-	CreatedTime uint64
+	CreatedTime string
 	Save bool
 	Type string
 	Prioritety uint8

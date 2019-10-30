@@ -1,11 +1,14 @@
 package task
 
+import (
+	"time"
+)
 func (t *Task) New() *Task {
 	var file *Task = &Task{
 		Name:        "",
 		Target:      "",
 		Time:        0,
-		CreatedTime: 0,
+		CreatedTime: time.RFC822,
 		Save:        false,
 		Type:        "",
 		Prioritety:  0,
