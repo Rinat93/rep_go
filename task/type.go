@@ -35,5 +35,5 @@ type Pool struct{
 }
 
 type PoolCollection struct {
-	Pool map[string]*Pool
+	Pool []*Pool
 }

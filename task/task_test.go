@@ -7,7 +7,8 @@ import (
 
 
 func TestPool(t *testing.T) {
-	t1 := Pool{Name:"test"}
+	t1 := new(Pool).New()
+	t1.Name = "test"
 	tasks := Task{
 		Name:        "t1",
 		Target:      "main",

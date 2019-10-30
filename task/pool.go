@@ -1,8 +1,8 @@
 package task
 
-//import (
-//	"sort"
-//)
+import (
+	"fmt"
+)
 func (c *Pool) New() *Pool {
 	var pool *Pool = new(Pool)
 	pool.TaskGroup = map[string]*Task{}
@@ -11,20 +11,20 @@ func (c *Pool) New() *Pool {
 
 /*
 Add - Добавление задачи в Pool
-
+	name - Имя группы задач
 Добавляем задачу в Pool, в право кидаем задачи с боле высокой приоритетностью
 
  */
-func (c *Pool) Add(name string, task *Task) {
+func (c *Pool) Add(name string, task *Task) error {
 	if c.TaskGroup[name] == nil {
-		c.TaskGroup = map[string]*Task{}
 		c.TaskGroup[name] = task
 	} else {
 		if task == nil {
-			return
+			return Error("Error: Not task")
 		}
 		c.TaskGroup[name].Add(task)
-
 	}
+	fmt.Printf("%+v\n", task.Prioritety)
+	return nil
 	//sort.Sort(c.TaskGroup)
 }
