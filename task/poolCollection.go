@@ -70,7 +70,7 @@ func (c *PoolCollection) SaveFile() {
 		//var r io.Reader = data_compress.CompressString(jsonSave)
 		exceptions.ErrorFy(err)
 
-		file.WriteAt([]byte(jsonSave),0)
+		_,err = file.WriteAt([]byte(jsonSave),0)
 		//_, err = io.WriteString(file, jsonSave )
 		exceptions.ErrorFy(err)
 
