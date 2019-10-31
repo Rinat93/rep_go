@@ -36,6 +36,7 @@ func (c *PoolCollection) Add(namePool string, nameTaskGroup string, task []*Task
 	c.Pool = append(c.Pool, pool)
 }
 
+
 // Сохранить результат в файл
 func (c *PoolCollection) SaveFile() {
 	err := os.MkdirAll(config.DIRECTORYCACHE, os.ModePerm)
@@ -65,7 +66,10 @@ func (c *PoolCollection) SaveFile() {
 		}
 
 		jsonSave, err := jsonData.JSONEncode(poll)
+
+		//var r io.Reader = data_compress.CompressString(jsonSave)
 		exceptions.ErrorFy(err)
+
 		file.WriteAt([]byte(jsonSave),0)
 		//_, err = io.WriteString(file, jsonSave )
 		exceptions.ErrorFy(err)
