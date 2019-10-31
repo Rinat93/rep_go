@@ -2,7 +2,6 @@ package task
 
 import (
 	"encoding/json"
-
 	"io/ioutil"
 	"os"
 	"reg_go/config"
@@ -13,6 +12,12 @@ import (
 func (c *PoolCollection) New() *PoolCollection {
 	var poolCollection *PoolCollection = new(PoolCollection)
 	return poolCollection
+}
+
+// Асинхронная обертка для добавления пул коллекции
+func (c *PoolCollection) AsyncAdd(namePool string, nameTaskGroup string, task []*Task, res chan<- *PoolCollection) {
+	c.Add(namePool, nameTaskGroup, task)
+	res <- c
 }
 
 /*
@@ -67,4 +72,27 @@ func (c *PoolCollection) SaveFile() {
 
 		file.Close()
 	}
+}
+
+// Выгрузка данных из файла
+func ReadFile() ([]*Pool,error){
+	var poll []*Pool = []*Pool{}
+	files, err := ioutil.ReadDir(config.DIRECTORYCACHE)
+	if err != nil {
+		return nil,err
+	}
+	for _, file := range files {
+		if file.IsDir() == false {
+			file, err := os.OpenFile(config.DIRECTORYCACHE+"/"+file.Name(), os.O_RDWR, 0755)
+			if err != nil {
+				return  nil,err
+			}
+			data,err := ioutil.ReadAll(file)
+			exceptions.ErrorFy(err)
+			err = json.Unmarshal(data, &poll)
+			exceptions.ErrorFy(err)
+		}
+	}
+
+	return poll,nil
 }

@@ -1,6 +1,8 @@
 package task
 
 import (
+	"fmt"
+	"reg_go/exceptions"
 	"testing"
 	"time"
 )
@@ -19,7 +21,7 @@ func GeneratePool(namePool string, nameGroupTask string) (string, string, []*Tas
 	return namePool, nameGroupTask,tasks
 }
 
-
+// Создание новых коллекции
 func TestPoolCollection(t *testing.T) {
 	poolCol := new(PoolCollection)
 	poolCol.Add(GeneratePool("Test1","TaskGroup1"))
@@ -29,3 +31,10 @@ func TestPoolCollection(t *testing.T) {
 	poolCol.SaveFile()
 }
 
+// Выгрузка данных из файлов
+func TestReadFile(t *testing.T) {
+	//var pool []*Pool = []*Pool{}
+	pool,err := ReadFile()
+	exceptions.ErrorFy(err)
+	fmt.Println(pool[0])
+}
