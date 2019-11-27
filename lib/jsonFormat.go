@@ -26,3 +26,10 @@ func (c *JSONFile) JSONDecode(data string) (interface{}, error) {
 
 	return jsonDec, err //bzip2.NewReader(b)
 }
+
+// Декодирование по определенному интерфейсу
+func (c *JSONFile) JSONDecodeSerialize(data string, serialize *interface{}) (error) {
+	var btJSON []byte = []byte(data)
+	err := json.Unmarshal(btJSON, serialize)
+	return err //bzip2.NewReader(b)
+}
